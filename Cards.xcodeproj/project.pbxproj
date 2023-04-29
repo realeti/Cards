@@ -24,6 +24,9 @@
 		C655A1CE29FD157600411158 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C655A1D129FD157600411158 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C655A1D329FD157600411158 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C655A1D929FD15EF00411158 /* BezierExperiments.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = BezierExperiments.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		C655A1DA29FD15FD00411158 /* ViewExperiments.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = ViewExperiments.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		C655A1DB29FD160500411158 /* ShapesPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = ShapesPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +66,9 @@
 				C655A1CE29FD157600411158 /* Assets.xcassets */,
 				C655A1D029FD157600411158 /* LaunchScreen.storyboard */,
 				C655A1D329FD157600411158 /* Info.plist */,
+				C655A1DB29FD160500411158 /* ShapesPlayground.playground */,
+				C655A1DA29FD15FD00411158 /* ViewExperiments.playground */,
+				C655A1D929FD15EF00411158 /* BezierExperiments.playground */,
 			);
 			path = Cards;
 			sourceTree = "<group>";
