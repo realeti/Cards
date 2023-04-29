@@ -10,6 +10,8 @@
    <TimelineItems>
    </TimelineItems>
    <TimelineItems>
+   </TimelineItems>
+   <TimelineItems>
       <LoggerValueHistoryTimelineItem
          documentLocation = "documentLocation"
          selectedRepresentationIndex = "selectedRepresentationIndex">

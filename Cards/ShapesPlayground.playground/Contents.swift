@@ -10,13 +10,21 @@ class MyViewController : UIViewController {
         self.view = view
         
         // игральная карточка рубашкой вверх
-        let firstCardView = CardView<CircleShape>(frame: CGRect(x: 10, y: 0, width: 120, height: 150), color: .black)
+        let firstCardView = CardView<CircleShape>(frame: CGRect(x: 10, y: 0, width: 120, height: 150), color: .systemRed)
+
         view.addSubview(firstCardView)
         
         // игральная карточка лицевой стороной вверх
-        let secondCardView = CardView<FillShape>(frame: CGRect(x: 200, y: 0, width: 120, height: 150), color: .red)
+        let secondCardView = CardView<FillShape>(frame: CGRect(x: 200, y: 0, width: 120, height: 150), color: .systemRed)
         view.addSubview(secondCardView)
         secondCardView.isFlipped = true
+        
+        firstCardView.flipCompletionHandler = { card in
+            card.superview?.bringSubviewToFront(card)
+        }
+        secondCardView.flipCompletionHandler = { card in
+            card.superview?.bringSubviewToFront(card)
+        }
     }
 }
 
@@ -56,10 +64,10 @@ class CircleShape: CAShapeLayer, ShapeLayerProtocol {
         
         // рассчитываем данные для круга
         // радиус равен половине меньшей из сторон
-        let radius = ([size.height, size.width].min() ?? 0) / 2
+        let radius = ([size.width, size.height].min() ?? 0) / 2
         // центр круга равен центрам каждой из сторон
-        let centerX = size.height / 2
-        let centerY = size.width / 2
+        let centerX = size.width / 2
+        let centerY = size.height / 2
         
         // рисуем круг
         let path = UIBezierPath(arcCenter: CGPoint(x: centerX, y: centerY), radius: radius, startAngle: 0, endAngle: .pi*2, clockwise: true)
@@ -214,7 +222,20 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     }
     var flipCompletionHandler: ((FlippableView) -> Void)?
     
-    func flip() {}
+    func flip() {
+        // определяем, между какими представлениями осуществить переход
+        let fromView = isFlipped ? frontSideView : backSideView
+        let toView = isFlipped ? backSideView : frontSideView
+        
+        // запускаем анимированный переход
+        UIView.transition(from: fromView, to: toView, duration: 0.75, options: [.transitionFlipFromTop], completion: { _ in
+            // обработчик переворота
+            self.flipCompletionHandler?(self)
+        })
+        
+        //isFlipped = !isFlipped
+        isFlipped.toggle()
+    }
     
     // цвет фигуры
     var color: UIColor!
@@ -252,6 +273,10 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
         let shapeLayer = ShapeType(size: shapeView.frame.size, fillColor: color.cgColor)
         shapeView.layer.addSublayer(shapeLayer)
         
+        // скругляем углы корневого слоя
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = CGFloat(cornerRadius)
+        
         return view
     }
     
@@ -271,6 +296,10 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
         default:
             break
         }
+        
+        // скругляем углы корневого слоя
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = CGFloat(cornerRadius)
         
         return view
     }
@@ -316,16 +345,17 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // анимировано возвращаем карточку в исходную позицию
-        UIView.animate(withDuration: 1.5) {
-            self.frame.origin = self.startTouchPoint
-            
-            // переворачиваем представление
-            if self.transform.isIdentity {
-                self.transform = CGAffineTransform(rotationAngle: .pi)
-            } else {
-                self.transform = .identity
-            }
+//        UIView.animate(withDuration: 0.75) {
+//            self.frame.origin = self.startTouchPoint
+//
+//            if self.transform.isIdentity {
+//                self.transform = CGAffineTransform(rotationAngle: .pi)
+//            } else {
+//                self.transform = .identity
+//            }
+//        }
+        if self.frame.origin == startTouchPoint {
+            flip()
         }
     }
 }
