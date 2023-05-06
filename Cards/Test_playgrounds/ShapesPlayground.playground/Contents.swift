@@ -10,7 +10,7 @@ class MyViewController : UIViewController {
         self.view = view
         
         // игральная карточка рубашкой вверх
-        let firstCardView = CardView<CircleShape>(frame: CGRect(x: 10, y: 0, width: 120, height: 150), color: .systemRed)
+        let firstCardView = CardView<SquareShape>(frame: CGRect(x: 10, y: 0, width: 120, height: 150), color: .systemRed)
 
         view.addSubview(firstCardView)
         
@@ -89,7 +89,7 @@ class SquareShape: CAShapeLayer, ShapeLayerProtocol {
         super.init()
         
         // сторона равна меньшей из сторон
-        let edgeSize = ([size.width, size.height].min() ?? 0) / 2
+        let edgeSize = ([size.width, size.height].min() ?? 0)
         // рисуем квадрат
         let rect = CGRect(x: 0, y: 0, width: edgeSize, height: edgeSize)
         let path = UIBezierPath(rect: rect)
