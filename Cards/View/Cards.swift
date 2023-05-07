@@ -138,8 +138,18 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.frame.origin.x = touches.first!.location(in: window).x - myAnchorPoint.x
-        self.frame.origin.y = touches.first!.location(in: window).y - myAnchorPoint.y
+        let touchesLocationX = touches.first!.location(in: window).x - myAnchorPoint.x
+        let touchesLocationY = touches.first!.location(in: window).y - myAnchorPoint.y
+        
+        let minX = self.bounds.minX
+        let minY = self.bounds.minY
+        let maxX = self.superview!.bounds.maxX - self.bounds.maxX
+        let maxY = self.superview!.bounds.maxY - self.bounds.maxY
+        
+        if touchesLocationX > minX && touchesLocationY > minY && touchesLocationX < maxX && touchesLocationY < maxY {
+            self.frame.origin.x = touchesLocationX
+            self.frame.origin.y = touchesLocationY
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
