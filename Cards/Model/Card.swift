@@ -10,6 +10,7 @@ import UIKit
 // типы фигуры карт
 enum CardType: CaseIterable {
     case circle
+    case circleNoColor
     case cross
     case square
     case fill

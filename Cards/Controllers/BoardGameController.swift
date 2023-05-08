@@ -28,7 +28,6 @@ class BoardGameController: UIViewController {
     lazy var game: Game = getNewGame()
     // игровое поле
     lazy var boardGameView = getBoardGameView()
-    
     // кнопка для запуска/перезапуска игры
     lazy var startButtonView = getStartButtonView()
     

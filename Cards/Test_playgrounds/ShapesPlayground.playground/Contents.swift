@@ -15,7 +15,7 @@ class MyViewController : UIViewController {
         view.addSubview(firstCardView)
         
         // игральная карточка лицевой стороной вверх
-        let secondCardView = CardView<FillShape>(frame: CGRect(x: 200, y: 0, width: 120, height: 150), color: .systemRed)
+        let secondCardView = CardView<CircleNoColorShape>(frame: CGRect(x: 200, y: 0, width: 120, height: 150), color: .systemRed)
         view.addSubview(secondCardView)
         secondCardView.isFlipped = true
         
@@ -77,6 +77,29 @@ class CircleShape: CAShapeLayer, ShapeLayerProtocol {
         self.path = path.cgPath
         // изменяем цвет
         self.fillColor = fillColor
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class CircleNoColorShape: CAShapeLayer, ShapeLayerProtocol {
+    required init(size: CGSize, fillColor: CGColor) {
+        super.init()
+        
+        let radius = ([size.width, size.height].min() ?? 0) / 2
+        let centerX = size.width / 2
+        let centerY = size.height / 2
+        
+        let path = UIBezierPath(arcCenter: CGPoint(x: centerX, y: centerY), radius: radius, startAngle: 0, endAngle: .pi*2, clockwise: true)
+        path.close()
+        
+        self.path = path.cgPath
+        self.fillColor = .none
+        self.strokeColor = fillColor
+        self.lineWidth = 5
+        
     }
     
     required init?(coder: NSCoder) {
