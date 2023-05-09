@@ -20,6 +20,8 @@ class BoardGameController: UIViewController {
         view.addSubview(startButtonView)
         // добавляем игровое поле на сцену
         view.addSubview(boardGameView)
+        // добавляем кнопку переворота всех карточек
+        view.addSubview(flipCardsButton)
     }
     
     // количество пар уникальных карточек
@@ -30,6 +32,10 @@ class BoardGameController: UIViewController {
     lazy var boardGameView = getBoardGameView()
     // кнопка для запуска/перезапуска игры
     lazy var startButtonView = getStartButtonView()
+    // кнопка переворота всех карточек
+    lazy var flipCardsButton = getFlipCardsButton()
+    
+    var isFlippedAll = false
     
     // размеры карточек
     private var cardSize: CGSize {
@@ -56,49 +62,6 @@ class BoardGameController: UIViewController {
     }
     
     private var flippedCards: [UIView] = []
-    
-    private func getStartButtonView() -> UIButton {
-        // создаем кнопку
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
-        // изменяем положение кнопки - перемещается в центр горизонтально оси родительского представления
-        button.center.x = view.center.x
-        
-        // получаем доступ к текущему окну
-        //let window = UIApplication.shared.windows[0]
-        let scenes = UIApplication.shared.connectedScenes
-        let windowScene = scenes.first as? UIWindowScene
-        let window = windowScene?.windows.first
-        // определяем отступ сверху от границ окна до Safe Area
-        let topPadding = window!.safeAreaInsets.top
-        // устанавливаем координату Y кнопки в соответствии с отступом
-        button.frame.origin.y = topPadding
-        
-        // настраиваем внешний вид кнопки
-        button.setTitle("Начать игру", for: .normal)
-        
-        // устанавливаем цвет текста для обычного (не нажатого) состояния
-        button.setTitleColor(.gray, for: .highlighted)
-        // устанавливаем фоновый цвет
-        button.backgroundColor = .systemGray4
-        // скругляем углы
-        button.layer.cornerRadius = 10
-        
-        // подключаем обработчик нажатия на кнопку
-        button.addTarget(nil, action: #selector(startGame(_:)), for: .touchUpInside)
-        
-        // только для iOS >= 14 можно использовать такой метод
-        /*button.addAction(UIAction(title: "", handler: { action in
-            print("button was pressed")
-        }), for: .touchUpInside)*/
-        
-        return button
-    }
-    
-    @objc func startGame(_ sender: UIButton) {
-        game = getNewGame()
-        let cards = getCardsBy(modelData: game.cards)
-        placeCardsOnBoard(cards)
-    }
     
     private func getBoardGameView() -> UIView {
         let boardView = UIView()
@@ -128,6 +91,84 @@ class BoardGameController: UIViewController {
         return boardView
     }
     
+    private func getStartButtonView() -> UIButton {
+        // создаем кнопку
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
+        // изменяем положение кнопки - перемещается в центр горизонтально оси родительского представления
+        button.center.x = view.center.x
+        
+        // получаем доступ к текущему окну
+        //let window = UIApplication.shared.windows[0]
+        let scenes = UIApplication.shared.connectedScenes
+        let windowScene = scenes.first as? UIWindowScene
+        let window = windowScene?.windows.first
+        // определяем отступ сверху от границ окна до Safe Area
+        let topPadding = window!.safeAreaInsets.top
+        // устанавливаем координату Y кнопки в соответствии с отступом
+        button.frame.origin.y = topPadding
+        
+        // настраиваем внешний вид кнопки
+        button.setTitle("Start game", for: .normal)
+        
+        // устанавливаем цвет текста для обычного (не нажатого) состояния
+        button.setTitleColor(.gray, for: .highlighted)
+        // устанавливаем фоновый цвет
+        button.backgroundColor = .systemGray4
+        // скругляем углы
+        button.layer.cornerRadius = 10
+        
+        // подключаем обработчик нажатия на кнопку
+        button.addTarget(nil, action: #selector(startGame(_:)), for: .touchUpInside)
+        
+        // только для iOS >= 14 можно использовать такой метод
+        /*button.addAction(UIAction(title: "", handler: { action in
+            print("button was pressed")
+        }), for: .touchUpInside)*/
+        
+        return button
+    }
+    
+    @objc func startGame(_ sender: UIButton) {
+        game = getNewGame()
+        let cards = getCardsBy(modelData: game.cards)
+        placeCardsOnBoard(cards)
+    }
+    
+    private func getFlipCardsButton() -> UIButton {
+        let margin: CGFloat = 10
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        button.frame.origin.x = view.frame.maxX - button.frame.width - margin
+        
+        let scenes = UIApplication.shared.connectedScenes
+        let windowScene = scenes.first as? UIWindowScene
+        let window = windowScene?.windows.first
+        let topPadding = window!.safeAreaInsets.top
+        button.frame.origin.y = topPadding
+        
+        button.setTitle("F", for: .normal)
+        button.setTitleColor(.systemRed, for: .highlighted)
+        button.backgroundColor = .systemRed
+        button.layer.cornerRadius = 10
+        
+        button.addTarget(nil, action: #selector(flipAllCards(_:)), for: .touchUpInside)
+        
+        return button
+    }
+    
+    @objc func flipAllCards(_ sender: UIButton) {
+        isFlippedAll.toggle()
+        
+        for card in cardViews {
+            let flippedCard = card as! FlippableView
+            if isFlippedAll && flippedCard.isFlipped || !isFlippedAll && !flippedCard.isFlipped {
+                flippedCards = []
+                continue
+            }
+            
+            flippedCard.globalFlip()
+        }
+    }
+    
     // генерация массива карточек на основе данных Модели
     private func getCardsBy(modelData: [Card]) -> [UIView] {
         // хранилище для представлений карточек
@@ -154,7 +195,7 @@ class BoardGameController: UIViewController {
             (card as! FlippableView).flipCompletionHandler = { [self] flippedCard in
                 // переносим карточку вверх иерархии
                 flippedCard.superview?.bringSubviewToFront(flippedCard)
-                
+
                 // добавляем или удаляем карточку
                 if flippedCard.isFlipped {
                     self.flippedCards.append(flippedCard)
@@ -163,13 +204,13 @@ class BoardGameController: UIViewController {
                         self.flippedCards.remove(at: cardIndex)
                     }
                 }
-                
+
                 // если перевернуто 2 карточки
                 if self.flippedCards.count == 2 {
                     // получаем карточки из данных модели
                     let firstCard = game.cards[self.flippedCards.first!.tag]
                     let secondCard = game.cards[self.flippedCards.last!.tag]
-                    
+
                     // если карточки одинаковые
                     if game.checkCards(firstCard, secondCard) {
                         // сперва анимировано скрываем их

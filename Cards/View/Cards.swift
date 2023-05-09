@@ -11,6 +11,7 @@ protocol FlippableView: UIView {
     var isFlipped: Bool { get set }
     var flipCompletionHandler: ((FlippableView) -> Void)? { get set }
     func flip()
+    func globalFlip()
 }
 
 class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
@@ -32,6 +33,14 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
             self.flipCompletionHandler?(self)
         })
         
+        isFlipped.toggle()
+    }
+    
+    func globalFlip() {
+        let fromView = isFlipped ? frontSideView : backSideView
+        let toView = isFlipped ? backSideView : frontSideView
+        
+        UIView.transition(from: fromView, to: toView, duration: 0.75, options: [.transitionFlipFromTop])
         isFlipped.toggle()
     }
     
