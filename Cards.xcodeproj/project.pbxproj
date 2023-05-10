@@ -17,6 +17,7 @@
 		C655A1CD29FD157500411158 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C655A1CB29FD157500411158 /* Main.storyboard */; };
 		C655A1CF29FD157600411158 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C655A1CE29FD157600411158 /* Assets.xcassets */; };
 		C655A1D229FD157600411158 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C655A1D029FD157600411158 /* LaunchScreen.storyboard */; };
+		C6676B972A0C0E4000AD2D09 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6676B962A0C0E4000AD2D09 /* MainController.swift */; };
 		C6A5A3192A017ED800F1B422 /* CardViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A5A3182A017ED800F1B422 /* CardViewFactory.swift */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +37,7 @@
 		C655A1D929FD15EF00411158 /* BezierExperiments.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = BezierExperiments.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C655A1DA29FD15FD00411158 /* ViewExperiments.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = ViewExperiments.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C655A1DB29FD160500411158 /* ShapesPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = ShapesPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		C6676B962A0C0E4000AD2D09 /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 		C6A5A3182A017ED800F1B422 /* CardViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -83,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				C637248829FD270C00099923 /* BoardGameController.swift */,
+				C6676B962A0C0E4000AD2D09 /* MainController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 				C637248C29FD281600099923 /* Card.swift in Sources */,
 				C637248E29FD29AF00099923 /* Game.swift in Sources */,
 				C637248429FD253F00099923 /* Cards.swift in Sources */,
+				C6676B972A0C0E4000AD2D09 /* MainController.swift in Sources */,
 				C655A1C629FD157500411158 /* AppDelegate.swift in Sources */,
 				C6A5A3192A017ED800F1B422 /* CardViewFactory.swift in Sources */,
 				C655A1C829FD157500411158 /* SceneDelegate.swift in Sources */,

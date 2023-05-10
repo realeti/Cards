@@ -22,6 +22,8 @@ class BoardGameController: UIViewController {
         view.addSubview(boardGameView)
         // добавляем кнопку переворота всех карточек
         view.addSubview(flipCardsButton)
+        // добавляем кнопку возврата на главный экран
+        view.addSubview(mainScreenButton)
     }
     
     // количество пар уникальных карточек
@@ -34,6 +36,8 @@ class BoardGameController: UIViewController {
     lazy var startButtonView = getStartButtonView()
     // кнопка переворота всех карточек
     lazy var flipCardsButton = getFlipCardsButton()
+    // кнопка возврата на главный экран
+    lazy var mainScreenButton = getMainScreenButton()
     
     var isFlippedAll = false
     
@@ -93,7 +97,7 @@ class BoardGameController: UIViewController {
     
     private func getStartButtonView() -> UIButton {
         // создаем кнопку
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
         // изменяем положение кнопки - перемещается в центр горизонтально оси родительского представления
         button.center.x = view.center.x
         
@@ -113,7 +117,7 @@ class BoardGameController: UIViewController {
         // устанавливаем цвет текста для обычного (не нажатого) состояния
         button.setTitleColor(.gray, for: .highlighted)
         // устанавливаем фоновый цвет
-        button.backgroundColor = .systemGray4
+        button.backgroundColor = .systemRed
         // скругляем углы
         button.layer.cornerRadius = 10
         
@@ -136,7 +140,7 @@ class BoardGameController: UIViewController {
     
     private func getFlipCardsButton() -> UIButton {
         let margin: CGFloat = 10
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
         button.frame.origin.x = view.frame.maxX - button.frame.width - margin
         
         let scenes = UIApplication.shared.connectedScenes
@@ -145,9 +149,9 @@ class BoardGameController: UIViewController {
         let topPadding = window!.safeAreaInsets.top
         button.frame.origin.y = topPadding
         
-        button.setTitle("F", for: .normal)
+        button.setTitle("Flip!", for: .normal)
         button.setTitleColor(.systemRed, for: .highlighted)
-        button.backgroundColor = .systemRed
+        button.backgroundColor = .systemIndigo
         button.layer.cornerRadius = 10
         
         button.addTarget(nil, action: #selector(flipAllCards(_:)), for: .touchUpInside)
@@ -167,6 +171,31 @@ class BoardGameController: UIViewController {
             
             flippedCard.globalFlip()
         }
+    }
+    
+    private func getMainScreenButton() -> UIButton {
+        let margin: CGFloat = 10
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
+        button.frame.origin.x = margin
+        
+        let scenes = UIApplication.shared.connectedScenes
+        let windowScene = scenes.first as? UIWindowScene
+        let window = windowScene?.windows.first
+        let topPadding = window!.safeAreaInsets.top
+        button.frame.origin.y = topPadding
+        
+        button.setTitle("Main menu", for: .normal)
+        button.setTitleColor(.gray, for: .highlighted)
+        button.backgroundColor = .systemIndigo
+        button.layer.cornerRadius = 10
+        
+        button.addTarget(nil, action: #selector(showMainScreen(_:)), for: .touchUpInside)
+        
+        return button
+    }
+    
+    @objc func showMainScreen(_ sender: UIButton) {
+        self.dismiss(animated: true)
     }
     
     // генерация массива карточек на основе данных Модели
