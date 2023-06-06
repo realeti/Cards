@@ -22,8 +22,10 @@ class BoardGameController: UIViewController {
         view.addSubview(boardGameView)
         // добавляем кнопку переворота всех карточек
         view.addSubview(flipCardsButton)
-        // добавляем кнопку возврата на главный экран
-        view.addSubview(mainScreenButton)
+        // добавляем кнопку возврата к главному меню
+        view.addSubview(backToMainScene)
+        
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     // количество пар уникальных карточек
@@ -36,8 +38,8 @@ class BoardGameController: UIViewController {
     lazy var startButtonView = getStartButtonView()
     // кнопка переворота всех карточек
     lazy var flipCardsButton = getFlipCardsButton()
-    // кнопка возврата на главный экран
-    lazy var mainScreenButton = getMainScreenButton()
+    // кнопка возврата в главное меню
+    lazy var backToMainScene = getMainSceneButton()
     
     var isFlippedAll = false
     
@@ -155,7 +157,6 @@ class BoardGameController: UIViewController {
         button.layer.cornerRadius = 10
         
         button.addTarget(nil, action: #selector(flipAllCards(_:)), for: .touchUpInside)
-        
         return button
     }
     
@@ -173,7 +174,7 @@ class BoardGameController: UIViewController {
         }
     }
     
-    private func getMainScreenButton() -> UIButton {
+    private func getMainSceneButton() -> UIButton {
         let margin: CGFloat = 10
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
         button.frame.origin.x = margin
@@ -184,18 +185,18 @@ class BoardGameController: UIViewController {
         let topPadding = window!.safeAreaInsets.top
         button.frame.origin.y = topPadding
         
-        button.setTitle("Main menu", for: .normal)
-        button.setTitleColor(.gray, for: .highlighted)
-        button.backgroundColor = .systemIndigo
+        button.setTitle("Main Menu", for: .normal)
+        button.setTitleColor(.systemBlue, for: .highlighted)
+        button.backgroundColor = .systemGreen
         button.layer.cornerRadius = 10
         
-        button.addTarget(nil, action: #selector(showMainScreen(_:)), for: .touchUpInside)
-        
+        button.addTarget(nil, action: #selector(showMainScene(_:)), for: .touchUpInside)
         return button
     }
     
-    @objc func showMainScreen(_ sender: UIButton) {
-        self.dismiss(animated: true)
+    @objc func showMainScene(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     // генерация массива карточек на основе данных Модели
