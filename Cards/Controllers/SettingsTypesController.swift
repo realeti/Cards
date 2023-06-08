@@ -8,38 +8,40 @@
 import UIKit
 
 class SettingsTypesController: UITableViewController {
-
+    private var settingsPairs: [String] = ["Четыре пары", "Пять пар", "Шесть пар", "Семь пар", "Восемь пар", "Десять пар", "Двенадцать пар"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        self.navigationItem.title = "Выберите кол-во пар карточек"
+        self.navigationItem.largeTitleDisplayMode = .never
     }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return settingsPairs.count
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsTypesCell", for: indexPath)
+        
+        let title = cell.viewWithTag(3) as? UILabel
+        
+        title?.text = settingsPairs[indexPath.row]
+        cell.accessoryType = indexPath.row == 0 ? .checkmark : .none
 
         return cell
     }
-    */
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 
     /*
     // Override to support conditional editing of the table view.
