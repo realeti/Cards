@@ -14,8 +14,9 @@ class SettingsGameController: UITableViewController {
     }
     
     var settingsStorage: SettingsStorageProtocol = SettingsStorage()
-    var settingsSection: [Int: [typeSettings]] = [:]
+    var settingsSection: [Int: [TypeSettings]] = [:]
     var settings: [Int: [SettingsProtocol]] = [:]
+    var selectedSetting: SettingsProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,17 +77,25 @@ class SettingsGameController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedSetting = settings[indexPath.section]?[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "toEditSetting" {
+            let destinaton = segue.destination as! SettingsTypesController
+            destinaton.selectedSetting = selectedSetting
+            
+            destinaton.doAfterEdit = { [unowned self] currentValue in
+                settings.forEach { section in
+                    for (i, setting) in section.value.enumerated() {
+                        if setting.currentValue == selectedSetting?.currentValue {
+                            settings[section.key]?[i].currentValue = currentValue
+                            tableView.reloadData()
+                        }
+                    }
+                }
+            }
+        }
     }
-    */
-
 }

@@ -82,7 +82,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="m1z-Zh-Qct" kind="show" id="1BX-nR-nlq"/>
+                                    <segue destination="m1z-Zh-Qct" kind="show" identifier="toEditSetting" id="mO3-AV-Hf7"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -92,13 +92,13 @@
                             <outlet property="delegate" destination="792-aX-3SB" id="Xhl-Jf-F54"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="AI2-iE-1OT"/>
+                    <navigationItem key="navigationItem" title="Title" id="ChM-Fs-ErD"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XEl-Td-z6m" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1660.3053435114502" y="-27.464788732394368"/>
         </scene>
-        <!--Settings Types Controller-->
+        <!--Backk-->
         <scene sceneID="BrC-hP-qhA">
             <objects>
                 <tableViewController id="m1z-Zh-Qct" customClass="SettingsTypesController" customModule="Cards" customModuleProvider="target" sceneMemberID="viewController">
@@ -135,7 +135,9 @@
                             <outlet property="delegate" destination="m1z-Zh-Qct" id="vAk-ab-uEP"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Bci-eI-Gm8"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Backk" id="rlI-gD-IjJ"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8iI-cM-cw9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

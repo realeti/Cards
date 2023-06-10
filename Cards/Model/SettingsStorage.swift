@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum typeSettings: String {
+enum TypeSettings: String {
     case pairs = "Кол-во пар одинаковых карт"
     case colors = "Доступные цвета карт"
     case figures = "Типы карт"
@@ -15,7 +15,7 @@ enum typeSettings: String {
 }
 
 protocol SettingsProtocol {
-    var typeValue: typeSettings { get set }
+    var typeValue: TypeSettings { get set }
     var currentValue: Int { get set }
 }
 
@@ -25,7 +25,7 @@ protocol SettingsStorageProtocol {
 }
 
 struct Settings: SettingsProtocol {
-    var typeValue: typeSettings
+    var typeValue: TypeSettings
     var currentValue: Int
 }
 

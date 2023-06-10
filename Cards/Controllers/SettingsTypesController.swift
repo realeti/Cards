@@ -8,13 +8,50 @@
 import UIKit
 
 class SettingsTypesController: UITableViewController {
-    private var settingsPairs: [String] = ["Четыре пары", "Пять пар", "Шесть пар", "Семь пар", "Восемь пар", "Десять пар", "Двенадцать пар"]
+    enum PairsCount: String, CaseIterable {
+        case four
+        case five
+        case six
+        case seven
+        case eight
+        case nine
+        case ten
+        
+        var rawValue: (number: Int, name: String) {
+            switch self {
+            case .four: return (4, "4 пары")
+            case .five: return (5, "5 пар")
+            case .six: return (6, "6 пар")
+            case .seven: return (7, "7 пар")
+            case .eight: return (8, "8 пар")
+            case .nine: return (9, "9 пар")
+            case .ten: return (10, "10 пар")
+            }
+        }
+    }
+    
+    private var settingsPairs: [PairsCount] = []
+    
+    var selectedSetting: SettingsProtocol?
+    private var selectedTypePairs: PairsCount = .eight
+    
+    var doAfterEdit: ((Int) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "Выберите кол-во пар карточек"
-        self.navigationItem.largeTitleDisplayMode = .never
+        self.navigationItem.title = "Кол-во пар карточек"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(saveData(_:)))
+        
+        for value in PairsCount.allCases {
+            settingsPairs.append(value)
+        }
+    }
+    
+    @objc func saveData(_ sender: UIButton) {
+        let currentValue = selectedTypePairs.rawValue.number
+        doAfterEdit?(currentValue)
+        self.navigationController?.popViewController(animated: true)
     }
 
     // MARK: - Table view data source
@@ -24,7 +61,6 @@ class SettingsTypesController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return settingsPairs.count
     }
 
@@ -33,59 +69,17 @@ class SettingsTypesController: UITableViewController {
         
         let title = cell.viewWithTag(3) as? UILabel
         
-        title?.text = settingsPairs[indexPath.row]
-        cell.accessoryType = indexPath.row == 0 ? .checkmark : .none
+        title?.text = settingsPairs[indexPath.row].rawValue.name
+        cell.accessoryType = settingsPairs[indexPath.row] == selectedTypePairs ? .checkmark : .none
 
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedType = settingsPairs[indexPath.row]
+        selectedTypePairs = selectedType
+        
+        tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
