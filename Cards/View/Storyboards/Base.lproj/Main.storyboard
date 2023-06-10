@@ -81,9 +81,6 @@
                                         <constraint firstItem="GhI-dS-OEB" firstAttribute="leading" secondItem="WGq-Ub-tdY" secondAttribute="trailing" id="oQQ-WF-R9h"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="m1z-Zh-Qct" kind="show" identifier="toEditSetting" id="mO3-AV-Hf7"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <sections/>
@@ -98,24 +95,24 @@
             </objects>
             <point key="canvasLocation" x="1660.3053435114502" y="-27.464788732394368"/>
         </scene>
-        <!--Backk-->
+        <!--Settings Types Controller-->
         <scene sceneID="BrC-hP-qhA">
             <objects>
-                <tableViewController id="m1z-Zh-Qct" customClass="SettingsTypesController" customModule="Cards" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="SettingsTypesController" id="m1z-Zh-Qct" customClass="SettingsTypesController" customModule="Cards" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="1NR-f3-8ja">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" tag="1" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="settingsTypesCell" id="lTp-5U-wET">
-                                <rect key="frame" x="0.0" y="55.333332061767578" width="393" height="43"/>
+                                <rect key="frame" x="0.0" y="55.333332061767578" width="393" height="42.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lTp-5U-wET" id="4wK-Uk-cod">
-                                    <rect key="frame" x="0.0" y="0.0" width="393" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="393" height="42.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zqr-1k-VSd">
-                                            <rect key="frame" x="20" y="11" width="353" height="21"/>
+                                            <rect key="frame" x="20" y="11.000000000000002" width="353" height="20.666666666666671"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -136,12 +133,12 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Backk" id="rlI-gD-IjJ"/>
+                    <navigationItem key="navigationItem" id="rlI-gD-IjJ"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8iI-cM-cw9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2428" y="-27"/>
+            <point key="canvasLocation" x="2350" y="-27"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="mwl-ff-Ao9">

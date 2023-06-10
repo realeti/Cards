@@ -79,23 +79,29 @@ class SettingsGameController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedSetting = settings[indexPath.section]?[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        guard let selectedSetting = selectedSetting else {
+            return
+        }
+        
+        showEditSettingsController(selectedSetting)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toEditSetting" {
-            let destinaton = segue.destination as! SettingsTypesController
-            destinaton.selectedSetting = selectedSetting
-            
-            destinaton.doAfterEdit = { [unowned self] currentValue in
-                settings.forEach { section in
-                    for (i, setting) in section.value.enumerated() {
-                        if setting.currentValue == selectedSetting?.currentValue {
-                            settings[section.key]?[i].currentValue = currentValue
-                            tableView.reloadData()
-                        }
+    private func showEditSettingsController(_ currentSetting: SettingsProtocol) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let editSettingController = storyboard.instantiateViewController(withIdentifier: "SettingsTypesController") as! SettingsTypesController
+        editSettingController.selectedSetting = currentSetting
+        
+        editSettingController.doAfterEdit = { [unowned self] currentValue in
+            settings.forEach { section in
+                for (i, setting) in section.value.enumerated() {
+                    if setting.currentValue == currentSetting.currentValue {
+                        settings[section.key]?[i].currentValue = currentValue
+                        tableView.reloadData()
                     }
                 }
             }
         }
+        self.navigationController?.pushViewController(editSettingController, animated: true)
     }
 }
