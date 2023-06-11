@@ -7,43 +7,59 @@
 
 import UIKit
 
-enum TypeSettings: String {
+enum SettingType: String {
     case pairs = "Кол-во пар одинаковых карт"
     case colors = "Доступные цвета карт"
     case figures = "Типы карт"
     case design = "Узоры обратной стороны карт"
 }
 
-protocol SettingsProtocol {
-    var typeValue: TypeSettings { get set }
-    var currentValue: Int { get set }
+protocol SettingProtocol {
+    var typeSetting: SettingType { get set }
+    var currentValue: [Int] { get set }
 }
 
-protocol SettingsStorageProtocol {
-    func loadSettings() -> [SettingsProtocol]
-    func saveSettings(_ settings: [SettingsProtocol])
+protocol SettingStorageProtocol {
+    func loadSettings() -> [SettingProtocol]
+    func saveSettings(_ settings: [SettingProtocol])
 }
 
-struct Settings: SettingsProtocol {
-    var typeValue: TypeSettings
-    var currentValue: Int
+struct Setting: SettingProtocol {
+    var typeSetting: SettingType
+    var currentValue: [Int]
 }
 
-class SettingsStorage: SettingsStorageProtocol {
-    func loadSettings() -> [SettingsProtocol] {
-        let testSettings: [SettingsProtocol] = [
-            Settings(typeValue: .pairs, currentValue: 1),
-            Settings(typeValue: .colors, currentValue: 2),
-            Settings(typeValue: .figures, currentValue: 3),
-            Settings(typeValue: .design, currentValue: 4)
+class SettingsStorage: SettingStorageProtocol {
+    func loadSettings() -> [SettingProtocol] {
+        let testSettings: [SettingProtocol] = [
+            Setting(typeSetting: .pairs, currentValue: [1]),
+            Setting(typeSetting: .colors, currentValue: [2, 4]),
+            Setting(typeSetting: .figures, currentValue: [3, 2]),
+            Setting(typeSetting: .design, currentValue: [4, 1])
         ]
         return testSettings
     }
     
-    func saveSettings(_ settings: [SettingsProtocol]) {}
+    func saveSettings(_ settings: [SettingProtocol]) {}
 }
 
-enum PairsCount: CaseIterable {
+enum SettingValue {
+    case pairs
+    case colors
+    case figures
+    case design
+    
+    var name: String {
+        switch self {
+        case .pairs: return "Кол-во пар одинаковых карт"
+        case .colors: return "Доступные цвета карт"
+        case .figures: return "Типы карт"
+        case .design: return "Узоры обратной стороны карт"
+        }
+    }
+}
+
+enum PairsType: CaseIterable {
     case four
     case five
     case six

@@ -8,26 +8,24 @@
 import UIKit
 
 class SettingsTypesController: UITableViewController {
-    private var settingsPairs: [PairsCount] = []
-    private var selectedTypePairs: PairsCount = .eight
-    
+    private var settingsPairs: [PairsType] = []
     private var settingsColors: [ColorsType] = []
-    private var selectedColorsType: [ColorsType] = [.black, .orange]
     
-    var selectedSetting: SettingsProtocol?
-    var doAfterEdit: ((Int) -> Void)?
+    var selectedSetting: SettingProtocol?
+    var selectedTypes: [Int] = []
+    var doAfterEdit: (([Int]) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard let currentSettingType = selectedSetting?.typeValue else {
+        guard let currentSettingType = selectedSetting?.typeSetting else {
             return
         }
         
         switch currentSettingType {
         case .pairs:
             self.navigationItem.title = "Кол-во пар карточек"
-            for value in PairsCount.allCases {
+            for value in PairsType.allCases {
                 settingsPairs.append(value)
             }
         case .colors:
@@ -36,11 +34,11 @@ class SettingsTypesController: UITableViewController {
                 settingsColors.append(value)
             }
         case .figures:
-            for value in PairsCount.allCases {
+            for value in PairsType.allCases {
                 settingsPairs.append(value)
             }
         case .design:
-            for value in PairsCount.allCases {
+            for value in PairsType.allCases {
                 settingsPairs.append(value)
             }
         }
@@ -49,20 +47,7 @@ class SettingsTypesController: UITableViewController {
     }
     
     @objc func saveData(_ sender: UIButton) {
-        guard let currentSettingType = selectedSetting?.typeValue else {
-            return
-        }
-        
-        var currentValue = 0
-        
-        switch currentSettingType {
-        case .pairs: currentValue = selectedTypePairs.rawValue.number
-        case .colors: currentValue = selectedColorsType.count
-        case .figures: currentValue = selectedTypePairs.rawValue.number
-        case .design: currentValue = selectedTypePairs.rawValue.number
-        }
-        
-        doAfterEdit?(currentValue)
+        doAfterEdit?(selectedTypes)
         self.navigationController?.popViewController(animated: true)
     }
 
@@ -73,7 +58,7 @@ class SettingsTypesController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let currentSettingType = selectedSetting?.typeValue else {
+        guard let currentSettingType = selectedSetting?.typeSetting else {
             return 0
         }
         
@@ -92,7 +77,7 @@ class SettingsTypesController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsTypesCell", for: indexPath)
         
-        guard let currentSettingType = selectedSetting?.typeValue else {
+        guard let currentSettingType = selectedSetting?.typeSetting else {
             return cell
         }
         
@@ -112,7 +97,8 @@ class SettingsTypesController: UITableViewController {
         let title = cell.viewWithTag(3) as? UILabel
         
         title?.text = settingsPairs[indexPath.row].rawValue.name
-        cell.accessoryType = settingsPairs[indexPath.row] == selectedTypePairs ? .checkmark : .none
+        //cell.accessoryType = settingsPairs[indexPath.row] == selectedTypePairs ? .checkmark : .none
+        cell.accessoryType = selectedTypes.contains(indexPath.row) ? .checkmark : .none
         
         return cell
     }
@@ -121,13 +107,14 @@ class SettingsTypesController: UITableViewController {
         let title = cell.viewWithTag(3) as? UILabel
         
         title?.text = settingsColors[indexPath.row].rawValue.name
-        cell.accessoryType = selectedColorsType.contains(settingsColors[indexPath.row]) ? .checkmark : .none
+        //cell.accessoryType = selectedColorsType.contains(settingsColors[indexPath.row]) ? .checkmark : .none
+        cell.accessoryType = selectedTypes.contains(indexPath.row) ? .checkmark : .none
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let currentSettingType = selectedSetting?.typeValue else {
+        guard let currentSettingType = selectedSetting?.typeSetting else {
             return
         }
         
@@ -143,23 +130,24 @@ class SettingsTypesController: UITableViewController {
     }
     
     private func didSelectForPairs(_ indexPath: IndexPath) {
-        let selectedType = settingsPairs[indexPath.row]
-        selectedTypePairs = selectedType
+        if selectedTypes.count > 0 {
+            selectedTypes = []
+        }
+        selectedTypes.append(indexPath.row)
     }
     
     private func didSelectForColors(_ indexPath: IndexPath) {
-        let selectedType = settingsColors[indexPath.row]
+        let selectRow = indexPath.row
         
-        if selectedColorsType.contains(selectedType) {
-            guard let selectedIndex = selectedColorsType.firstIndex(of: selectedType) else {
-                return
-            }
-            
-            if selectedColorsType.count > 1 {
-                selectedColorsType.remove(at: selectedIndex)
+        if selectedTypes.contains(selectRow) {
+            if selectedTypes.count > 1 {
+                guard let selectedIndex = selectedTypes.firstIndex(of: selectRow) else {
+                    return
+                }
+                selectedTypes.remove(at: selectedIndex)
             }
         } else {
-            selectedColorsType.append(selectedType)
+            selectedTypes.append(selectRow)
         }
     }
 }

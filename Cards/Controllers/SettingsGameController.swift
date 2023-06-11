@@ -13,10 +13,10 @@ class SettingsGameController: UITableViewController {
         case two
     }
     
-    var settingsStorage: SettingsStorageProtocol = SettingsStorage()
-    var settingsSection: [Int: [TypeSettings]] = [:]
-    var settings: [Int: [SettingsProtocol]] = [:]
-    var selectedSetting: SettingsProtocol?
+    var settingsStorage: SettingStorageProtocol = SettingsStorage()
+    var settingsSection: [Int: [SettingType]] = [:]
+    var settings: [Int: [SettingProtocol]] = [:]
+    var selectedSetting: SettingProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +38,7 @@ class SettingsGameController: UITableViewController {
         
         settingsStorage.loadSettings().forEach { setting in
             settingsSection.forEach { section in
-                if settingsSection[section.key]!.contains(setting.typeValue) {
+                if settingsSection[section.key]!.contains(setting.typeSetting) {
                     settings[section.key]?.append(setting)
                 }
             }
@@ -69,8 +69,13 @@ class SettingsGameController: UITableViewController {
         let title = cell.viewWithTag(1) as? UILabel
         let type = cell.viewWithTag(2) as? UILabel
         
-        title?.text = currentSetting.typeValue.rawValue
-        type?.text = String(currentSetting.currentValue)
+        title?.text = currentSetting.typeSetting.rawValue
+        
+        switch currentSetting.typeSetting {
+        case .pairs: type?.text = String(PairsType.allCases[currentSetting.currentValue.first ?? 0].rawValue.number)
+        default: type?.text = String(currentSetting.currentValue.count)
+        }
+        
         type?.textColor = .systemGray4
         
         return cell
@@ -87,10 +92,11 @@ class SettingsGameController: UITableViewController {
         showEditSettingsController(selectedSetting)
     }
     
-    private func showEditSettingsController(_ currentSetting: SettingsProtocol) {
+    private func showEditSettingsController(_ currentSetting: SettingProtocol) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let editSettingController = storyboard.instantiateViewController(withIdentifier: "SettingsTypesController") as! SettingsTypesController
         editSettingController.selectedSetting = currentSetting
+        editSettingController.selectedTypes = currentSetting.currentValue
         
         editSettingController.doAfterEdit = { [unowned self] currentValue in
             settings.forEach { section in
