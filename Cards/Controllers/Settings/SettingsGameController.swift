@@ -30,7 +30,7 @@ class SettingsGameController: UITableViewController {
         let sectionTwo = Section.two.rawValue
         
         settingsSection[sectionOne] = [.pairs, .colors]
-        settingsSection[sectionTwo] = [.figures, .design]
+        settingsSection[sectionTwo] = [.figures, .backside]
         
         for i in 0..<settingsSection.count {
             settings[i] = []
@@ -72,7 +72,7 @@ class SettingsGameController: UITableViewController {
         title?.text = currentSetting.typeSetting.rawValue
         
         switch currentSetting.typeSetting {
-        case .pairs: type?.text = String(PairsType.allCases[currentSetting.currentValue.first ?? 0].rawValue.number)
+        case .pairs: type?.text = String(CardPairs.allCases[currentSetting.currentValue.first ?? 0].rawValue.number)
         default: type?.text = String(currentSetting.currentValue.count)
         }
         

@@ -8,8 +8,10 @@
 import UIKit
 
 class SettingsTypesController: UITableViewController {
-    private var settingsPairs: [PairsType] = []
-    private var settingsColors: [ColorsType] = []
+    private var settingsPairs: [CardPairs] = []
+    private var settingsColors: [CardColor] = []
+    private var settingsFigures: [CardFigure] = []
+    private var settingsBackSide: [CardBackSide] = []
     
     var selectedSetting: SettingProtocol?
     var selectedTypes: [Int] = []
@@ -25,21 +27,21 @@ class SettingsTypesController: UITableViewController {
         switch currentSettingType {
         case .pairs:
             self.navigationItem.title = "Кол-во пар карточек"
-            for value in PairsType.allCases {
+            for value in CardPairs.allCases {
                 settingsPairs.append(value)
             }
         case .colors:
             self.navigationItem.title = "Доступные цвета"
-            for value in ColorsType.allCases {
+            for value in CardColor.allCases {
                 settingsColors.append(value)
             }
         case .figures:
-            for value in PairsType.allCases {
-                settingsPairs.append(value)
+            for value in CardFigure.allCases {
+                settingsFigures.append(value)
             }
-        case .design:
-            for value in PairsType.allCases {
-                settingsPairs.append(value)
+        case .backside:
+            for value in CardBackSide.allCases {
+                settingsBackSide.append(value)
             }
         }
         
@@ -63,14 +65,10 @@ class SettingsTypesController: UITableViewController {
         }
         
         switch currentSettingType {
-        case .pairs:
-            return settingsPairs.count
-        case .colors:
-            return settingsColors.count
-        case .figures:
-            return 0
-        case .design:
-            return 0
+        case .pairs: return settingsPairs.count
+        case .colors: return settingsColors.count
+        case .figures: return settingsFigures.count
+        case .backside: return settingsBackSide.count
         }
     }
 
@@ -82,14 +80,10 @@ class SettingsTypesController: UITableViewController {
         }
         
         switch currentSettingType {
-        case .pairs:
-            return cellForPairsSettings(cell, indexPath)
-        case .colors:
-            return cellForColorsTypeSetting(cell, indexPath)
-        case .figures:
-            return cellForPairsSettings(cell, indexPath)
-        case .design:
-            return cellForPairsSettings(cell, indexPath)
+        case .pairs: return cellForPairsSettings(cell, indexPath)
+        case .colors: return cellForColorsSetting(cell, indexPath)
+        case .figures: return cellForFiguresSetting(cell, indexPath)
+        case .backside: return cellForBackSideSettings(cell, indexPath)
         }
     }
     
@@ -97,17 +91,33 @@ class SettingsTypesController: UITableViewController {
         let title = cell.viewWithTag(3) as? UILabel
         
         title?.text = settingsPairs[indexPath.row].rawValue.name
-        //cell.accessoryType = settingsPairs[indexPath.row] == selectedTypePairs ? .checkmark : .none
         cell.accessoryType = selectedTypes.contains(indexPath.row) ? .checkmark : .none
         
         return cell
     }
     
-    private func cellForColorsTypeSetting(_ cell: UITableViewCell, _ indexPath: IndexPath) -> UITableViewCell {
+    private func cellForColorsSetting(_ cell: UITableViewCell, _ indexPath: IndexPath) -> UITableViewCell {
         let title = cell.viewWithTag(3) as? UILabel
         
         title?.text = settingsColors[indexPath.row].rawValue.name
-        //cell.accessoryType = selectedColorsType.contains(settingsColors[indexPath.row]) ? .checkmark : .none
+        cell.accessoryType = selectedTypes.contains(indexPath.row) ? .checkmark : .none
+        
+        return cell
+    }
+    
+    private func cellForFiguresSetting(_ cell: UITableViewCell, _ indexPath: IndexPath) -> UITableViewCell {
+        let title = cell.viewWithTag(3) as? UILabel
+        
+        title?.text = settingsFigures[indexPath.row].rawValue
+        cell.accessoryType = selectedTypes.contains(indexPath.row) ? .checkmark : .none
+        
+        return cell
+    }
+    
+    private func cellForBackSideSettings(_ cell: UITableViewCell, _ indexPath: IndexPath) -> UITableViewCell {
+        let title = cell.viewWithTag(3) as? UILabel
+        
+        title?.text = settingsBackSide[indexPath.row].rawValue
         cell.accessoryType = selectedTypes.contains(indexPath.row) ? .checkmark : .none
         
         return cell
@@ -120,9 +130,7 @@ class SettingsTypesController: UITableViewController {
         
         switch currentSettingType {
         case .pairs: didSelectForPairs(indexPath)
-        case .colors: didSelectForColors(indexPath)
-        case .figures: didSelectForPairs(indexPath)
-        case .design: didSelectForPairs(indexPath)
+        default: didSelectForSettings(indexPath)
         }
         
         tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
@@ -136,7 +144,7 @@ class SettingsTypesController: UITableViewController {
         selectedTypes.append(indexPath.row)
     }
     
-    private func didSelectForColors(_ indexPath: IndexPath) {
+    private func didSelectForSettings(_ indexPath: IndexPath) {
         let selectRow = indexPath.row
         
         if selectedTypes.contains(selectRow) {

@@ -8,7 +8,7 @@
 import UIKit
 
 class CardViewFactory {
-    func get(_ shape: CardType, withSize size: CGSize, andColor color: CardColor) -> UIView {
+    func get(_ shape: CardFigure, withSize size: CGSize, andColor color: CardColor) -> UIView {
         // на основе размеров определяем фрейм
         let frame = CGRect(origin: .zero, size: size)
         // определяем UI-цвет на основе цвета модели

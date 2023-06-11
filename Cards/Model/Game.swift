@@ -18,7 +18,7 @@ class Game {
         // генерирум новый массив карточек
         var cards = [Card]()
         for _ in 0...cardsCount {
-            let randomElement = (type: CardType.allCases.randomElement()!, color: CardColor.allCases.randomElement()!)
+            let randomElement = (type: CardFigure.allCases.randomElement()!, color: CardColor.allCases.randomElement()!)
             cards.append(randomElement)
         }
         self.cards = cards

@@ -90,10 +90,9 @@
 		C637248729FD26D900099923 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C675FD682A35F43D00ADF826 /* Settings */,
 				C637248829FD270C00099923 /* BoardGameController.swift */,
 				C6676B962A0C0E4000AD2D09 /* MainController.swift */,
-				C698132C2A1CF92200135A0B /* SettingsGameController.swift */,
-				C6FD4D332A2FB3A100098B22 /* SettingsTypesController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -138,6 +137,15 @@
 				C655A1D329FD157600411158 /* Info.plist */,
 			);
 			path = Cards;
+			sourceTree = "<group>";
+		};
+		C675FD682A35F43D00ADF826 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				C6FD4D332A2FB3A100098B22 /* SettingsTypesController.swift */,
+				C698132C2A1CF92200135A0B /* SettingsGameController.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		C6A5A3172A017EBA00F1B422 /* Helpers */ = {
