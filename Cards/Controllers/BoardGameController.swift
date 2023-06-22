@@ -28,8 +28,8 @@ class BoardGameController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    // количество пар уникальных карточек
-    var cardsPairsCount = 8
+    var settingsStorage: SettingsStorage = SettingsStorage()
+    
     // сущность "Игра"
     lazy var game: Game = getNewGame()
     // игровое поле
@@ -62,7 +62,17 @@ class BoardGameController: UIViewController {
     
     private func getNewGame() -> Game {
         let game = Game()
-        game.cardsCount = cardsPairsCount
+        
+        settingsStorage.loadSettings().forEach { setting in
+            switch setting.typeSetting {
+            case .pairs:
+                game.cardsCount = CardPairs.allCases[setting.currentValue.first ?? 0].rawValue.number
+                print(game.cardsCount)
+            default:
+                print("any")
+            }
+        }
+        
         game.generateCards()
         return game
     }
