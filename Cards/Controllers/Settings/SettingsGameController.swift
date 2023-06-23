@@ -15,8 +15,9 @@ class SettingsGameController: UITableViewController {
     
     var settingsStorage: SettingStorageProtocol = SettingsStorage()
     var settingsSection: [Int: [SettingType]] = [:]
-    var settings: [Int: [SettingProtocol]] = [:]
     var selectedSetting: SettingProtocol?
+    
+    var settings: [Int: [SettingProtocol]] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,6 +108,11 @@ class SettingsGameController: UITableViewController {
                     }
                 }
             }
+            var savingArray: [SettingProtocol] = []
+            settings.forEach { _, value in
+                savingArray += value
+            }
+            settingsStorage.saveSettings(savingArray)
         }
         self.navigationController?.pushViewController(editSettingController, animated: true)
     }

@@ -10,6 +10,12 @@ import UIKit
 class Game {
     // количество пар уникальных карточек
     var cardsCount = 0
+    // цвета у карточек
+    var cardsColors = [Int]()
+    // типы фигур у карточек
+    var cardsFigures = [Int]()
+    // рисунки обратной стороны карточек
+    var cardsBacksides = [Int]()
     // массив сгенерированных карточек
     var cards = [Card]()
     
@@ -17,8 +23,8 @@ class Game {
     func generateCards() {
         // генерирум новый массив карточек
         var cards = [Card]()
-        for _ in 0...cardsCount {
-            let randomElement = (type: CardFigure.allCases.randomElement()!, color: CardColor.allCases.randomElement()!)
+        for _ in 0..<cardsCount {
+            let randomElement = (type: CardFigure.allCases[cardsFigures.randomElement()!], color: CardColor.allCases[cardsColors.randomElement()!])
             cards.append(randomElement)
         }
         self.cards = cards

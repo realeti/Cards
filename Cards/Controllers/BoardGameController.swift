@@ -28,8 +28,8 @@ class BoardGameController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    // количество пар уникальных карточек
-    var cardsPairsCount = 8
+    var settingsStorage: SettingsStorage = SettingsStorage()
+    
     // сущность "Игра"
     lazy var game: Game = getNewGame()
     // игровое поле
@@ -62,7 +62,18 @@ class BoardGameController: UIViewController {
     
     private func getNewGame() -> Game {
         let game = Game()
-        game.cardsCount = cardsPairsCount
+        
+        settingsStorage.loadSettings().forEach { setting in
+            switch setting.typeSetting {
+            case .pairs: game.cardsCount = CardPairs.allCases[setting.currentValue.first ?? 0].rawValue.number
+            case .colors: game.cardsColors = setting.currentValue
+            case .figures: game.cardsFigures = setting.currentValue
+            case .backside: game.cardsBacksides = setting.currentValue
+            }
+        }
+        
+        // TODO: add setting colors, figures, backside
+        
         game.generateCards()
         return game
     }
@@ -92,7 +103,7 @@ class BoardGameController: UIViewController {
         
         // изменяем стиль игрового поля
         boardView.layer.cornerRadius = 5
-        boardView.backgroundColor = UIColor(red: 0.1, green: 0.9, blue: 0.1, alpha: 0.3)
+        boardView.backgroundColor = .systemBlue
         
         return boardView
     }
@@ -210,12 +221,12 @@ class BoardGameController: UIViewController {
         // перебираем массив карточек в модели
         for (index, modelCard) in modelData.enumerated() {
             // добавляем первый экземпляр карты
-            let cardOne = cardViewFactory.get(modelCard.type, withSize: cardSize, andColor: modelCard.color)
+            let cardOne = cardViewFactory.get(modelCard.type, withSize: cardSize, andColor: modelCard.color, andBackSide: CardBackSide.allCases[game.cardsBacksides.randomElement()!])
             cardOne.tag = index
             cardViews.append(cardOne)
             
             // добавляем второй экземпляр карты
-            let cardTwo = cardViewFactory.get(modelCard.type, withSize: cardSize, andColor: modelCard.color)
+            let cardTwo = cardViewFactory.get(modelCard.type, withSize: cardSize, andColor: modelCard.color, andBackSide: CardBackSide.allCases[game.cardsBacksides.randomElement()!])
             cardTwo.tag = index
             cardViews.append(cardTwo)
         }
