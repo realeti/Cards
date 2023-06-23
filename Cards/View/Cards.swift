@@ -46,12 +46,15 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     
     // цвет фигуры
     var color: UIColor!
+    // узор обратной стороны карточки
+    var backside: CardBackSide
     // границы карточки (радиус закругления)
     var cornerRadius = 20
     
-    init(frame: CGRect, color: UIColor) {
-        super.init(frame: frame)
+    init(frame: CGRect, color: UIColor, backside: CardBackSide) {
+        self.backside = backside
         self.color = color
+        super.init(frame: frame)
         
         setupBorders()
     }
@@ -66,7 +69,7 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     // представление с лицевой стороны карты
     lazy var frontSideView: UIView = self.getFrontSideView()
     // представление с обратной стороной карты
-    lazy var backSideView: UIView = self.getBackSideView()
+    lazy var backSideView: UIView = self.getBackSideView(backside)
     
     // возвращает представление для лицевой стороны карточки
     private func getFrontSideView() -> UIView {
@@ -88,20 +91,18 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     }
     
     // возвращает вью для обратной стороны
-    private func getBackSideView() -> UIView {
+    private func getBackSideView(_ backside: CardBackSide) -> UIView {
         let view = UIView(frame: self.bounds)
         view.backgroundColor = .white
         
         // выбор случайного узора для рубашки
-        switch ["circle", "line"].randomElement()! {
-        case "circle":
+        switch backside {
+        case .circles:
             let layer = BackSideCircle(size: self.bounds.size, fillColor: UIColor.black.cgColor)
             view.layer.addSublayer(layer)
-        case "line":
+        case .lines:
             let layer = BackSideLine(size: self.bounds.size, fillColor: UIColor.black.cgColor)
             view.layer.addSublayer(layer)
-        default:
-            break
         }
         
         // скругляем углы корневого слоя

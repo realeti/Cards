@@ -130,7 +130,9 @@ class SettingsTypesController: UITableViewController {
         
         switch currentSettingType {
         case .pairs: didSelectForPairs(indexPath)
-        default: didSelectForSettings(indexPath)
+        case .colors: didSelectForColors(indexPath)
+        case .figures: didSelectForFigures(indexPath)
+        case .backside: didSelectForBacksides(indexPath)
         }
         
         tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
@@ -144,7 +146,37 @@ class SettingsTypesController: UITableViewController {
         selectedTypes.append(indexPath.row)
     }
     
-    private func didSelectForSettings(_ indexPath: IndexPath) {
+    private func didSelectForColors(_ indexPath: IndexPath) {
+        let selectRow = indexPath.row
+        
+        if selectedTypes.contains(selectRow) {
+            if selectedTypes.count > 2 {
+                guard let selectedIndex = selectedTypes.firstIndex(of: selectRow) else {
+                    return
+                }
+                selectedTypes.remove(at: selectedIndex)
+            }
+        } else {
+            selectedTypes.append(selectRow)
+        }
+    }
+    
+    private func didSelectForFigures(_ indexPath: IndexPath) {
+        let selectRow = indexPath.row
+        
+        if selectedTypes.contains(selectRow) {
+            if selectedTypes.count > 2 {
+                guard let selectedIndex = selectedTypes.firstIndex(of: selectRow) else {
+                    return
+                }
+                selectedTypes.remove(at: selectedIndex)
+            }
+        } else {
+            selectedTypes.append(selectRow)
+        }
+    }
+    
+    private func didSelectForBacksides(_ indexPath: IndexPath) {
         let selectRow = indexPath.row
         
         if selectedTypes.contains(selectRow) {
