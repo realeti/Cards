@@ -65,7 +65,7 @@ class BoardGameController: UIViewController {
         
         settingsStorage.loadSettings().forEach { setting in
             switch setting.typeSetting {
-            case .pairs: game.cardsCount = CardPairs.allCases[setting.currentValue.first ?? 0].rawValue.number
+            case .pairs: game.cardsCount = setting.currentValue.first ?? 0
             case .colors: game.cardsColors = setting.currentValue
             case .figures: game.cardsFigures = setting.currentValue
             case .backside: game.cardsBacksides = setting.currentValue

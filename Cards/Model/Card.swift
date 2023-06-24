@@ -8,24 +8,24 @@
 import UIKit
 
 // возможное кол-во парных карт
-enum CardPairs: CaseIterable {
-    case four
-    case five
-    case six
-    case seven
-    case eight
-    case nine
-    case ten
+enum CardPairs: String, CaseIterable {
+    case four = "4 пары"
+    case five = "5 пар"
+    case six = "6 пар"
+    case seven = "7 пар"
+    case eight = "8 пар"
+    case nine = "9 пар"
+    case ten = "10 пар"
     
-    var rawValue: (number: Int, name: String) {
+    var number: Int {
         switch self {
-        case .four: return (4, "4 пары")
-        case .five: return (5, "5 пар")
-        case .six: return (6, "6 пар")
-        case .seven: return (7, "7 пар")
-        case .eight: return (8, "8 пар")
-        case .nine: return (9, "9 пар")
-        case .ten: return (10, "10 пар")
+        case .four: return 4
+        case .five: return 5
+        case .six: return 6
+        case .seven: return 7
+        case .eight: return 8
+        case .nine: return 9
+        case .ten: return 10
         }
     }
 }
@@ -40,26 +40,26 @@ enum CardFigure: String, CaseIterable {
 }
 
 // цвета карт
-enum CardColor: CaseIterable {
-    case red
-    case green
-    case gray
-    case black
-    case brown
-    case yellow
-    case purple
-    case orange
+enum CardColor: String, CaseIterable {
+    case red = "Красный"
+    case green = "Зеленый"
+    case gray = "Серый"
+    case black = "Черный"
+    case brown = "Коричневый"
+    case yellow = "Желтый"
+    case purple = "Пурпурный"
+    case orange = "Оранжевый"
     
-    var rawValue: (color: UIColor, name: String) {
+    var viewColor: UIColor {
         switch self {
-        case .red: return (.red, "Красный")
-        case .green: return (.green, "Зеленый")
-        case .gray: return (.gray, "Cерый")
-        case .black: return (.black, "Черный")
-        case .brown: return (.brown, "Коричневый")
-        case .yellow: return (.systemYellow, "Желтый")
-        case .purple: return (.purple, "Пурпурный")
-        case .orange: return (.systemOrange, "Оранжевый")
+        case .red: return .red
+        case .green: return .systemGreen
+        case .gray: return .gray
+        case .black: return .black
+        case .brown: return .brown
+        case .yellow: return .systemYellow
+        case .purple: return .purple
+        case .orange: return .orange
         }
     }
 }

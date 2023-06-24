@@ -36,10 +36,12 @@ class SettingsTypesController: UITableViewController {
                 settingsColors.append(value)
             }
         case .figures:
+            self.navigationItem.title = "Типы фигур"
             for value in CardFigure.allCases {
                 settingsFigures.append(value)
             }
         case .backside:
+            self.navigationItem.title = "Обратная сторона"
             for value in CardBackSide.allCases {
                 settingsBackSide.append(value)
             }
@@ -90,7 +92,7 @@ class SettingsTypesController: UITableViewController {
     private func cellForPairsSettings(_ cell: UITableViewCell, _ indexPath: IndexPath) -> UITableViewCell {
         let title = cell.viewWithTag(3) as? UILabel
         
-        title?.text = settingsPairs[indexPath.row].rawValue.name
+        title?.text = settingsPairs[indexPath.row].rawValue
         cell.accessoryType = selectedTypes.contains(indexPath.row) ? .checkmark : .none
         
         return cell
@@ -99,7 +101,7 @@ class SettingsTypesController: UITableViewController {
     private func cellForColorsSetting(_ cell: UITableViewCell, _ indexPath: IndexPath) -> UITableViewCell {
         let title = cell.viewWithTag(3) as? UILabel
         
-        title?.text = settingsColors[indexPath.row].rawValue.name
+        title?.text = settingsColors[indexPath.row].rawValue
         cell.accessoryType = selectedTypes.contains(indexPath.row) ? .checkmark : .none
         
         return cell

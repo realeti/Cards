@@ -10,7 +10,7 @@ import UIKit
 enum SettingType: String {
     case pairs = "Кол-во пар одинаковых карт"
     case colors = "Доступные цвета карт"
-    case figures = "Типы карт"
+    case figures = "Типы фигур"
     case backside = "Узоры обратной стороны карт"
 }
 
