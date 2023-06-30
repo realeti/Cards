@@ -11,11 +11,16 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        switch traitCollection.userInterfaceStyle {
+        case .dark: darkMode = true
+        default: darkMode = false
+        }
     }
     
     override func loadView() {
         super.loadView()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = UIColor(named: "MainBackgroundColor") ?? .systemBackground
         
         view.addSubview(backgroundImage)
         view.addSubview(labelAppName)
@@ -29,6 +34,7 @@ class MainViewController: UIViewController {
     lazy var wandImage = getWandImage()
     lazy var buttonNewGame = getNewGameButton()
     lazy var buttonSettings = getSettingsButton()
+    lazy var darkMode: Bool = false
     
     private func getBackgroundImage() -> UIImageView {
         let image = UIImage(named: "backgroundMainMenu")
@@ -54,7 +60,7 @@ class MainViewController: UIViewController {
         label.frame.origin.y = topPadding + padding
         
         label.text = "Cards"
-        label.textColor = UIColor(named: "CustomColor") ?? .systemBlue
+        label.textColor = UIColor(named: "MainCustomColor") ?? .systemBlue
         label.font = UIFont(name: "CCRickVeitchW05", size: 85) ?? .systemFont(ofSize: 85)
         label.transform = CGAffineTransform(rotationAngle: (-6 * CGFloat.pi / 180))
         
@@ -74,7 +80,7 @@ class MainViewController: UIViewController {
         
         imageView.clipsToBounds = true
         imageView.image = image
-        imageView.tintColor = UIColor(named: "CustomColor") ?? .systemBlue
+        imageView.tintColor = UIColor(named: "MainCustomColor") ?? .systemBlue
         
         return imageView
     }
@@ -94,9 +100,7 @@ class MainViewController: UIViewController {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 26)
         button.setTitleColor(UIColor(red: 15/255, green: 43/255, blue: 89/255, alpha: 1.0), for: .normal)
         button.setTitleColor(.systemRed, for: .highlighted)
-        button.backgroundColor = .clear
-        button.layer.borderWidth = 3
-        button.layer.borderColor = CGColor(red: 15/255, green: 43/255, blue: 89/255, alpha: 1.0)
+        updateButtonNewGameAppereance(button)
         button.layer.cornerRadius = 10
         
         button.addTarget(nil, action: #selector(newGame(_:)), for: .touchUpInside)
@@ -119,11 +123,8 @@ class MainViewController: UIViewController {
         button.setTitle("Settings", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 26)
         button.setTitleColor(UIColor(red: 15/255, green: 43/255, blue: 89/255, alpha: 1.0), for: .normal)
-        button.setTitleColor(.red, for: .highlighted)
-        button.backgroundColor = .systemBlue
-        button.backgroundColor = .clear
-        button.layer.borderWidth = 3
-        button.layer.borderColor = CGColor(red: 15/255, green: 43/255, blue: 89/255, alpha: 1.0)
+        button.setTitleColor(.systemRed, for: .highlighted)
+        updateButtonSettingsAppereance(button)
         button.layer.cornerRadius = 10
         
         button.addTarget(nil, action: #selector(gameSettings(_:)), for: .touchUpInside)
@@ -135,21 +136,36 @@ class MainViewController: UIViewController {
         let gameSettingsController = storyboard.instantiateViewController(withIdentifier: "GameSettingsController")
         self.navigationController?.pushViewController(gameSettingsController, animated: true)
     }
-}
+    
+    private func updateButtonNewGameAppereance(_ button: UIButton) {
+        if darkMode {
+            button.backgroundColor = .white
+            button.layer.borderWidth = 0
+        } else {
+            button.backgroundColor = .clear
+            button.layer.borderWidth = 3
+            button.layer.borderColor = CGColor(red: 15/255, green: 43/255, blue: 89/255, alpha: 1.0)
+        }
+    }
+    
+    private func updateButtonSettingsAppereance(_ button: UIButton) {
+        if darkMode {
+            button.backgroundColor = .white
+            button.layer.borderWidth = 0
+        } else {
+            button.backgroundColor = .clear
+            button.layer.borderWidth = 3
+            button.layer.borderColor = CGColor(red: 15/255, green: 43/255, blue: 89/255, alpha: 1.0)
+        }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        switch previousTraitCollection?.userInterfaceStyle {
+        case .dark: darkMode = false
+        default: darkMode = true
+        }
 
-extension UIImage {
-    func withBackground(color: UIColor, opaque: Bool = true) -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(size, opaque, scale)
-
-        guard let context = UIGraphicsGetCurrentContext(),
-              let image = cgImage else { return self }
-
-        let rect = CGRect(origin: .zero, size: size)
-        context.setFillColor(color.cgColor)
-        context.fill(rect)
-        context.concatenate(CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: size.height))
-        context.draw(image, in: rect)
-
-        return UIGraphicsGetImageFromCurrentImageContext() ?? self
+        updateButtonNewGameAppereance(buttonNewGame)
+        updateButtonSettingsAppereance(buttonSettings)
     }
 }

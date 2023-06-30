@@ -77,7 +77,7 @@ class SettingsGameController: UITableViewController {
         default: type?.text = String(currentSetting.currentValue.count)
         }
         
-        type?.textColor = .systemGray4
+        type?.textColor = .systemGray
         
         return cell
     }
