@@ -19,7 +19,6 @@ class MainViewController: UIViewController {
         switch traitCollection.userInterfaceStyle {
         case .dark: darkMode = true
         default: darkMode = false
-            print(traitCollection.userInterfaceStyle.rawValue)
         }
         
         view.backgroundColor = UIColor(named: "MainBackgroundColor") ?? .systemBackground
