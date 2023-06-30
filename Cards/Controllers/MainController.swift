@@ -11,15 +11,17 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        switch traitCollection.userInterfaceStyle {
-        case .dark: darkMode = true
-        default: darkMode = false
-        }
     }
     
     override func loadView() {
         super.loadView()
+        
+        switch traitCollection.userInterfaceStyle {
+        case .dark: darkMode = true
+        default: darkMode = false
+            print(traitCollection.userInterfaceStyle.rawValue)
+        }
+        
         view.backgroundColor = UIColor(named: "MainBackgroundColor") ?? .systemBackground
         
         view.addSubview(backgroundImage)
