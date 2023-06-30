@@ -5,7 +5,7 @@ _**English** | [Ukrainian](README.ua.md) | [Russian](README.ru.md)_
 Cards - card game app.
 * It is necessary to find two pairs of cards of the same color and pattern.
 * The cards are turned over by touch, if the pair does not fit, the cards return to their original state.
-* There is a hint feature, the Flip button. After pressing all the cards turn over.
+* There is a hint feature, the Flip button. After clicking, all cards will turn over.
 * In the settings menu, you can choose the best version of the game for yourself.
 * There is support for light and dark themes.
 * Practice with animations.
