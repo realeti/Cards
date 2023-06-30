@@ -103,7 +103,7 @@ class BoardGameController: UIViewController {
         
         // изменяем стиль игрового поля
         boardView.layer.cornerRadius = 5
-        boardView.backgroundColor = .systemBlue
+        boardView.backgroundColor = UIColor(red: 51/255, green: 153/255, blue: 255/255, alpha: 0.14)
         
         return boardView
     }
