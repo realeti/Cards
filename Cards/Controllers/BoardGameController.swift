@@ -294,8 +294,12 @@ class BoardGameController: UIViewController {
                     }
                     else {
                         // переворачиваем карточки рубашкой вверх
-                        for card in self.flippedCards {
-                            (card as! FlippableView).flip()
+                        for cardView in self.flippedCards {
+                            let card = cardView as! FlippableView
+                            
+                            if !card.isFlipped {
+                                card.flip()
+                            }
                         }
                         self.flippedCards = []
                     }
