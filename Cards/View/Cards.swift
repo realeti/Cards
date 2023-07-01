@@ -10,6 +10,9 @@ import UIKit
 protocol FlippableView: UIView {
     var isFlipped: Bool { get set }
     var flipCompletionHandler: ((FlippableView) -> Void)? { get set }
+    var touchCompletionHandler: ((FlippableView) -> Void)? { get set }
+    var isCanFlipped: Bool { get set }
+    var isTouched: Bool { get set }
     func flip()
     func globalFlip()
 }
@@ -21,6 +24,9 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
         }
     }
     var flipCompletionHandler: ((FlippableView) -> Void)?
+    var touchCompletionHandler: ((FlippableView) -> Void)?
+    var isCanFlipped: Bool = true
+    var isTouched: Bool = false
     
     func flip() {
         // определяем, между какими представлениями осуществить переход
@@ -140,6 +146,9 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     private var startTouchPoint: CGPoint!
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        isTouched = true
+        self.touchCompletionHandler?(self)
+        
         myAnchorPoint.x = touches.first!.location(in: window).x - frame.minX
         myAnchorPoint.y = touches.first!.location(in: window).y - frame.minY
         
@@ -163,7 +172,7 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     } 
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if self.frame.origin == startTouchPoint {
+        if self.frame.origin == startTouchPoint && isCanFlipped {
             flip()
         }
     }

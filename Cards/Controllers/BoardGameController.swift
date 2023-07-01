@@ -42,6 +42,7 @@ class BoardGameController: UIViewController {
     lazy var backToMainScene = getMainSceneButton()
     
     var isFlippedAll = false
+    var touchedCards: [Int] = []
     
     // размеры карточек
     private var cardSize: CGSize {
@@ -71,8 +72,6 @@ class BoardGameController: UIViewController {
             case .backside: game.cardsBacksides = setting.currentValue
             }
         }
-        
-        // TODO: add setting colors, figures, backside
         
         game.generateCards()
         return game
@@ -183,6 +182,13 @@ class BoardGameController: UIViewController {
             
             flippedCard.globalFlip()
         }
+        
+        if (!isFlippedAll) {
+            for card in cardViews {
+                (card as! FlippableView).isCanFlipped = true
+            }
+            touchedCards = []
+        }
     }
     
     private func getMainSceneButton() -> UIButton {
@@ -231,6 +237,27 @@ class BoardGameController: UIViewController {
             cardViews.append(cardTwo)
         }
         
+        // добавляем всем карточкам обработчик после касания
+        for card in cardViews {
+            (card as! FlippableView).touchCompletionHandler = { [self] touchedCard in
+                for (index, touchCard) in cardViews.enumerated() {
+                    if touchedCards.contains(index) {
+                        continue
+                    }
+                    
+                    if (touchCard as! FlippableView).isFlipped {
+                        touchedCards.append(index)
+                    }
+                }
+                
+                if touchedCards.count > 1 {
+                    for card in cardViews {
+                        (card as! FlippableView).isCanFlipped = false
+                    }
+                }
+            }
+        }
+        
         // добавляем всем картам обработчик переворота
         for card in cardViews {
             (card as! FlippableView).flipCompletionHandler = { [self] flippedCard in
@@ -260,8 +287,9 @@ class BoardGameController: UIViewController {
                             self.flippedCards.last!.layer.opacity = 0
                         }, completion: { _ in
                             self.flippedCards.first!.removeFromSuperview()
-                            self.flippedCards.last!.removeFromSuperview()
+                            self.flippedCards[self.flippedCards.index(after: 0)].removeFromSuperview()
                             self.flippedCards = []
+                            self.clearStateCards()
                         })
                     }
                     else {
@@ -269,15 +297,33 @@ class BoardGameController: UIViewController {
                         for card in self.flippedCards {
                             (card as! FlippableView).flip()
                         }
+                        self.flippedCards = []
                     }
+                }
+                
+                if flippedCards.isEmpty {
+                    clearStateCards()
                 }
             }
         }
         return cardViews
     }
     
+    private func clearStateCards() {
+        touchedCards = []
+        
+        for cardView in cardViews {
+            let card = cardView as! FlippableView
+            card.isTouched = false
+            card.isCanFlipped = true
+            card.isFlipped = false
+        }
+    }
+    
     private func placeCardsOnBoard(_ cards: [UIView]) {
         // удаляем все имеющиеся на игровом поле карточки
+        clearStateCards()
+        
         for card in cardViews {
             card.removeFromSuperview()
         }
